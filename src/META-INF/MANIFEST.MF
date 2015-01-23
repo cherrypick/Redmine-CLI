@@ -1,3 +1,15 @@
 Manifest-Version: 1.0
 Main-Class: com.xeonlab.redmine.cli.RedmineCliApplication
 
+Bundle-Version: 0.1
+Bundle-Copyright: Copyright (C) 2015 Konstantin Möllers
+Bundle-Name: Redmince CLI
+Bundle-Description: Redmine command line tool written in Java
+Bundle-License: MIT License
+Bundle-Developers: Konstantin Möllers <ksm.moellers@gmail.com>
+Bundle-Contributors: Konstantin Möllers <ksm.moellers@gmail.com>
+
+Implementation-Version: 0.1
+Implementation-Title: com.xeonlab.redmine.cli
+Implementation-Vendor: Konstantin Möllers
+Implementation-URL: https://github.com/CornyPhoenix/Redmine-CLI
