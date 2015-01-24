@@ -1,5 +1,6 @@
 package com.xeonlab.redmine.cli;
 
+import com.xeonlab.redmine.cli.cli.CliColor;
 import com.xeonlab.redmine.cli.options.OptionsFactory;
 import com.xeonlab.redmine.cli.options.RedmineOption;
 import com.xeonlab.redmine.cli.request.RedmineUrlBuilder;
@@ -33,6 +34,9 @@ public class RedmineCliApplication {
     public static void main(String[] args) {
         RedmineCliApplication application = new RedmineCliApplication();
         application.initialize(args);
+
+        System.setProperty("tool.name", "Redmine CLI Tool");
+        System.setProperty("tool.version", "0.1");
     }
 
     public void initialize(String[] args) {
@@ -92,6 +96,10 @@ public class RedmineCliApplication {
             return 0;
         });
         helpFormatter.setWidth(100);
-        helpFormatter.printHelp("redmine", "Redmine CLI Tool\nRedmine command line tool.\nCopyright (C) 2015 by Konstantin Möllers.", options, "", true);
+        String toolDescription = System.getProperty("tool.name") + " " + System.getProperty("tool.version");
+        String header = CliColor.FG_YELLOW.color(toolDescription) + "\n" +
+                "Redmine command line tool.\n" +
+                "Copyright (C) 2015 by Konstantin Möllers.";
+        helpFormatter.printHelp("redmine", header, options, "", true);
     }
 }
