@@ -4,8 +4,9 @@ import com.xeonlab.redmine.cli.options.OptionsFactory;
 import com.xeonlab.redmine.cli.options.RedmineOption;
 import com.xeonlab.redmine.cli.request.RedmineUrlBuilder;
 import com.xeonlab.redmine.cli.request.Request;
-import com.xeonlab.redmine.cli.response.RedmineJSONResponseParser;
+import com.xeonlab.redmine.cli.response.RedmineJsonResponseParser;
 import com.xeonlab.redmine.cli.response.Response;
+import com.xeonlab.redmine.cli.response.ResponseParser;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -17,8 +18,6 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.json.JSONObject;
-import org.json.JSONTokener;
 
 public class RedmineCliApplication {
 
@@ -55,14 +54,12 @@ public class RedmineCliApplication {
             // Connect to URL.
             System.out.println("Connecting to " + requestUrl.toString() + " ...");
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(requestUrl.openStream(), "UTF-8"))) {
-                JSONTokener tokener = new JSONTokener(reader);
-                JSONObject info = (JSONObject) tokener.nextValue();
-
                 // Parse response.
-                RedmineJSONResponseParser responseParser = new RedmineJSONResponseParser();
-                Response response = responseParser.parse(info);
+                ResponseParser responseParser = new RedmineJsonResponseParser();
+                Response response = responseParser.parse(reader);
 
                 System.out.println(response);
+                response.getIssues().forEach(System.out::println);
             } catch (IOException e) {
                 System.err.println("IO error – are you connected to internet?");
                 System.exit(5);
@@ -95,6 +92,6 @@ public class RedmineCliApplication {
             return 0;
         });
         helpFormatter.setWidth(100);
-        helpFormatter.printHelp("redmine", "\u001b[1;33mRedmine CLI tool\u001B[m\nRedmine command line tool.\nCopyright (C) 2015 by Konstantin Möllers.", options, "", true);
+        helpFormatter.printHelp("redmine", "Redmine CLI Tool\nRedmine command line tool.\nCopyright (C) 2015 by Konstantin Möllers.", options, "", true);
     }
 }

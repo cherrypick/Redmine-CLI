@@ -1,10 +1,8 @@
 package com.xeonlab.redmine.cli.response;
 
-import org.json.JSONObject;
-
 /**
  * @author Konstantin Simon Maria Moellers
- * @version 2015-01-23
+ * @version 2015-01-24
  */
 final public class EnumeratedValue {
     private int id;
@@ -16,13 +14,6 @@ final public class EnumeratedValue {
     }
 
     public EnumeratedValue() {
-    }
-
-    public EnumeratedValue(JSONObject values) {
-        this.id = values.getInt("id");
-        if (values.has("name")) {
-            this.name = values.getString("name");
-        }
     }
 
     @Override
