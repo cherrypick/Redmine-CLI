@@ -55,7 +55,6 @@
                             <mainClass>com.xeonlab.redmine.cli.RedmineCliApplication</mainClass>
                         </manifest>
                         <manifestEntries>
-                            <Name>${name}</Name>
                             <Created-By>Konstantin Simon Maria Möllers</Created-By>
                             <Implementation-Vendor>${organization.name}</Implementation-Vendor>
                             <Implementation-URL>${url}</Implementation-URL>
