@@ -25,7 +25,7 @@ import org.apache.commons.cli.ParseException;
 public class RedmineCliApplication {
 
     public static final String TOOL_NAME = "Redmine CLI Tool";
-    public static final String TOOL_VERSION = "0.1";
+    public static final String TOOL_VERSION = "0.2";
 
     private final CommandLineParser parser;
     private final Options options;
