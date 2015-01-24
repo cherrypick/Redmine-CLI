@@ -5,6 +5,7 @@ import com.xeonlab.redmine.cli.options.OptionsFactory;
 import com.xeonlab.redmine.cli.options.RedmineOption;
 import com.xeonlab.redmine.cli.request.RedmineUrlBuilder;
 import com.xeonlab.redmine.cli.request.Request;
+import com.xeonlab.redmine.cli.response.Issue;
 import com.xeonlab.redmine.cli.response.RedmineJsonResponseParser;
 import com.xeonlab.redmine.cli.response.Response;
 import com.xeonlab.redmine.cli.response.ResponseParser;
@@ -12,6 +13,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.GnuParser;
@@ -21,6 +23,9 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
 public class RedmineCliApplication {
+
+    public static final String TOOL_NAME = "Redmine CLI Tool";
+    public static final String TOOL_VERSION = "0.1";
 
     private final CommandLineParser parser;
     private final Options options;
@@ -35,8 +40,8 @@ public class RedmineCliApplication {
         RedmineCliApplication application = new RedmineCliApplication();
         application.initialize(args);
 
-        System.setProperty("tool.name", "Redmine CLI Tool");
-        System.setProperty("tool.version", "0.1");
+        System.setProperty("tool.name", TOOL_NAME);
+        System.setProperty("tool.version", TOOL_VERSION);
     }
 
     public void initialize(String[] args) {
@@ -56,14 +61,14 @@ public class RedmineCliApplication {
             URL requestUrl = urlBuilder.parseRequest(request);
 
             // Connect to URL.
-            System.out.println("Connecting to " + requestUrl.toString() + " ...");
+            System.err.println("Connecting to " + requestUrl.toString() + " ...");
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(requestUrl.openStream(), "UTF-8"))) {
                 // Parse response.
                 ResponseParser responseParser = new RedmineJsonResponseParser();
                 Response response = responseParser.parse(reader);
 
-                System.out.println(response);
-                response.getIssues().forEach(System.out::println);
+                System.err.println(response);
+                response.getIssues().forEach(issue -> printIssue(request.getUrl(), issue));
             } catch (IOException e) {
                 System.err.println("IO error – are you connected to internet?");
                 System.exit(5);
@@ -74,6 +79,53 @@ public class RedmineCliApplication {
             printHelp();
             System.exit(1);
         }
+    }
+
+    /**
+     * Prints an issue.
+     *
+     * @param url
+     * @param issue
+     */
+    private void printIssue(URL url, Issue issue) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        StringBuilder builder = new StringBuilder();
+
+        builder.append(CliColor.FG_YELLOW.color(issue.getTracker().getName() + " #" + issue.getId() + ": "));
+        builder.append(CliColor.FG_WHITE.color(issue.getSubject()));
+        builder.append('\n');
+        builder.append(CliColor.FG_BLUE.color(CliColor.UNDERLINED.color(issue.getWebPath(url))));
+        builder.append('\n');
+
+        builder.append("status:     ");
+        String status = issue.getStatus().getName();
+        builder.append(CliColor.colorIf(status, status.equals("Closed"), CliColor.FG_LIGHT_RED, CliColor.FG_LIGHT_GREEN));
+        builder.append('\n');
+
+        builder.append("author:     ");
+        String author = issue.getAuthor().getName();
+        builder.append(CliColor.FG_LIGHT_CYAN.color(author));
+        builder.append('\n');
+
+        if (issue.getFixedVersion() != null) {
+            builder.append("version:    ");
+            String version = issue.getFixedVersion().getName();
+            builder.append(CliColor.FG_LIGHT_CYAN.color(version));
+            builder.append('\n');
+        }
+
+        builder.append("created on: ");
+        builder.append(CliColor.FG_LIGHT_CYAN.color(dateFormat.format(issue.getCreatedOn())));
+        builder.append('\n');
+
+        builder.append("updated on: ");
+        builder.append(CliColor.FG_LIGHT_CYAN.color(dateFormat.format(issue.getUpdatedOn())));
+        builder.append('\n');
+
+        builder.append(CliColor.FG_PURPLE.color(issue.getDescription()));
+        builder.append('\n');
+
+        System.out.println(builder);
     }
 
     private void printHelp() {
@@ -96,7 +148,7 @@ public class RedmineCliApplication {
             return 0;
         });
         helpFormatter.setWidth(100);
-        String toolDescription = System.getProperty("tool.name") + " " + System.getProperty("tool.version");
+        String toolDescription = TOOL_NAME + " " + TOOL_VERSION;
         String header = CliColor.FG_YELLOW.color(toolDescription) + "\n" +
                 "Redmine command line tool.\n" +
                 "Copyright (C) 2015 by Konstantin Möllers.";

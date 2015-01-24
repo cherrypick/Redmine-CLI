@@ -2,6 +2,7 @@ package com.xeonlab.redmine.cli.response;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import java.io.IOException;
 import java.io.Reader;
 
@@ -16,6 +17,7 @@ public class RedmineJsonResponseParser implements ResponseParser {
     public RedmineJsonResponseParser() {
         mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        mapper.setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
     }
 
     @Override

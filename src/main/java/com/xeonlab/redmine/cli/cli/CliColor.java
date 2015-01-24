@@ -5,6 +5,13 @@ package com.xeonlab.redmine.cli.cli;
  * @version 2015-01-24
  */
 public enum CliColor {
+
+    /**
+     * Generic
+     */
+    BOLD("4"),
+    UNDERLINED("4"),
+
     /**
      * Foreground colors
      */
@@ -47,6 +54,17 @@ public enum CliColor {
 
     CliColor(String code) {
         this.code = code;
+    }
+
+    /**
+     * Colors a string based on a condition.
+     */
+    public static String colorIf(String str, boolean cond, CliColor ifTrue, CliColor ifNot) {
+        if (cond) {
+            return ifTrue.color(str);
+        }
+
+        return ifNot.color(str);
     }
 
     /**
