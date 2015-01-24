@@ -30,7 +30,7 @@ redmine -u http://redmine.example.com -k abcdefghixyz1234567890 --me --open
 
 ## Getting Started
 
-To get started, grab the [latest version here](https://github.com/CornyPhoenix/Redmine-CLI/releases/tag/v0.2).
+To get started, grab the [latest version here](https://github.com/CornyPhoenix/Redmine-CLI/releases/latest).
 
 Afterwards, I recommend you to set an alias for your own redmine in your `~/.bashrc`, like:
 
