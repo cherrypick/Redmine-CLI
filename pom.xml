@@ -12,7 +12,7 @@
     </organization>
     <groupId>com.cherry-pick</groupId>
     <artifactId>redmine-cli</artifactId>
-    <version>0.1</version>
+    <version>0.2</version>
     <url>https://github.com/CornyPhoenix/Redmine-CLI</url>
     <licenses>
         <license>
