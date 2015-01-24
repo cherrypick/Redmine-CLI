@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Meta information -->
+    <name>Redmine CLI Tool</name>
+    <organization>
+        <name>CherryPick</name>
+        <url>https://github.com/cherrypick</url>
+    </organization>
+    <groupId>com.cherry-pick</groupId>
+    <artifactId>redmine-cli</artifactId>
+    <version>0.2</version>
+    <url>https://github.com/CornyPhoenix/Redmine-CLI</url>
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://opensource.org/licenses/MIT</url>
+        </license>
+    </licenses>
+    <contributors>
+        <contributor>
+            <name>Konstantin Simon Maria Möllers</name>
+            <email>ksm.moellers@gmail.com</email>
+        </contributor>
+    </contributors>
+
+    <!-- Build properties -->
+    <properties>
+        <commons-cli-version>1.2</commons-cli-version>
+        <jackson-version>2.5.0</jackson-version>
+    </properties>
+
+    <build>
+        <plugins>
+            <!-- Source and target level -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.2</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+
+            <!-- Executable JAR plugin -->
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.xeonlab.redmine.cli.RedmineCliApplication</mainClass>
+                        </manifest>
+                        <manifestEntries>
+                            <Created-By>Konstantin Simon Maria Möllers</Created-By>
+                            <Implementation-Vendor>${organization.name}</Implementation-Vendor>
+                            <Implementation-URL>${url}</Implementation-URL>
+                            <Implementation-Version>${version}</Implementation-Version>
+                        </manifestEntries>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!-- Dependencies -->
+    <dependencies>
+
+        <dependency>
+            <groupId>commons-cli</groupId>
+            <artifactId>commons-cli</artifactId>
+            <version>${commons-cli-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson-version}</version>
+        </dependency>
+
+    </dependencies>
+</project>

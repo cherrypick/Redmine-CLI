@@ -1,5 +1,6 @@
 package com.xeonlab.redmine.cli.response;
 
+import java.net.URL;
 import java.util.Date;
 
 /**
@@ -173,5 +174,13 @@ final public class Issue {
     @Override
     public String toString() {
         return subject + " (#" + id + ")";
+    }
+
+    public String getWebPath(URL root) {
+        return root.toString() + getRelativePath();
+    }
+
+    public String getRelativePath() {
+        return "/issues/" + id;
     }
 }

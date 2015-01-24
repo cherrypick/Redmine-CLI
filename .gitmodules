@@ -1,3 +1,0 @@
-[submodule "src/org/json"]
-	path = src/org/json
-	url = git@github.com:CornyPhoenix/JSON-java.git
